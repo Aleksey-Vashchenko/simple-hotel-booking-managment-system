@@ -11,19 +11,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(name = "room")
 public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "type_id")
     private Type type;
-
-    @Override
-    public String toString() {
-        return "Room{" +
-                "id=" + id +
-                ", type=" + type +
-                '}';
-    }
+    private String number;
 }

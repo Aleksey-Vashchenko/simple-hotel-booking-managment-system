@@ -11,13 +11,16 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "customer")
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
     private String phoneNumber;
     private String mail;
     private String name;
+    private String surname;
+    private String patronymic;
     @OneToMany
     private List<Booking> bookingList;
 }

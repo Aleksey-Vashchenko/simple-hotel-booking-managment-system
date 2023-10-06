@@ -13,10 +13,11 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(name = "type")
 public class Type {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
     private String description;
     private String name;
     @Column(name = "amount_of_adult")
@@ -26,14 +27,4 @@ public class Type {
     @OneToMany(mappedBy = "type")
     private List<Room> rooms;
 
-    @Override
-    public String toString() {
-        return "Type{" +
-                "id=" + id +
-                ", description='" + description + '\'' +
-                ", name='" + name + '\'' +
-                ", amountOfAdult=" + amountOfAdult +
-                ", amountOfChildren=" + amountOfChildren +
-                '}';
-    }
 }
