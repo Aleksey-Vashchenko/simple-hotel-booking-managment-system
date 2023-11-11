@@ -10,11 +10,17 @@
     <property name="connection.password">12345</property>
     <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
     <property name="show_sql">true</property>
-    <property name="hibernate.hbm2ddl.auto">validate</property>
+    <property name="hbm2ddl.auto">validate</property>
+    <property name="hibernate.format_sql">true</property>
+
+    <mapping class="com.vashchenko.project.models.entities.Image"/>
+    <mapping class="com.vashchenko.project.models.entities.Room"/>
+    <mapping class="com.vashchenko.project.models.entities.User"/>
+    <mapping class="com.vashchenko.project.models.entities.RoomType"/>
+    <mapping class="com.vashchenko.project.models.entities.Booking"/>
+    <mapping class="com.vashchenko.project.models.entities.Guest"/>
 
 
-    <mapping class="com.vashchenko.entities.Room"/>
-    <mapping class="com.vashchenko.entities.Type"/>
 
     <!-- DB schema will be updated if needed -->
     <!-- <property name="hibernate.hbm2ddl.auto">update</property> -->

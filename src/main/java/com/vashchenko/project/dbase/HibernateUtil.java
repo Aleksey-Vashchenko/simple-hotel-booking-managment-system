@@ -1,4 +1,4 @@
-package com.vashchenko;
+package com.vashchenko.project.dbase;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
