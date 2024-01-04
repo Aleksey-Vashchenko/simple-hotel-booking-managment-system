@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="static/css/main.css">
+</head>
+<body>
+<header class="header" id="header">
+    <div class="head-top" th:replace="~{fragments/general_fragments::main_header1}"></div>
+</header>
+<form th:action="@{/booking/customer}" th:object="${newUser}" th:method="post">
+    <div class="book-form-1">
+        <div th:replace="~{fragments/general_fragments::userData_form}"></div>
+        <input th:type="submit" th:value="Подтвердить">
+    </div>
+</form>
+</body>
+</html>

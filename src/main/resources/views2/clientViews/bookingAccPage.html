@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="/static2/css/style.css" rel="stylesheet">
+</head>
+<body>
+<header>
+    <div class="head-top" th:replace="~{fragments1/fragments::main_header}"></div>
+</header>
+<div style="display: flex; flex-direction: row;height:max-content;height:100vh;background-color: rgba(199, 195, 195, 0.704);">
+    <div style="background-color: dimgrey;">
+        <h1 style="margin: 20px">Панель админа</h1>
+        <div>
+            <nav>
+                <ul>
+                    <li><a href="#" th:href="@{/acc}">Профиль</a></li>
+                    <li><a href="#" th:href="@{/client/bookings}">Бронирования</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <div style="padding-left: 80px; padding-top: 20px;">
+        <div th:fragment="client_panel">
+            <div>
+                <h1>История бронирований</h1>
+            </div>
+            <div>
+                <!-- Вкладки для переключения между текущими и истекшими бронированиями -->
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="currentTab" data-toggle="tab" href="#currentBookings">Текущие бронирования</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="expiredTab" data-toggle="tab" href="#expiredBookings">Истекшие бронирования</a>
+                    </li>
+                </ul>
+
+                <!-- Содержимое вкладок -->
+                <div class="tab-content">
+                    <!-- Вкладка для текущих бронирований -->
+                    <div id="currentBookings" class="tab-pane fade show active">
+                        <!-- Здесь вставьте код для текущих бронирований -->
+                        <table class="work-table">
+                            <thead>
+                            <td>Дата заселения</td>
+                            <td>Дата выселения</td>
+                            <td>Номер</td>
+                            <td>Кол-во человек</td>
+                            <td></td>
+                            </thead>
+                            <tbody>
+                            <!--/*@thymesVar id="booking" type="com.vashchenko.project.models.entities.Booking"*/-->
+                            <tr th:each="booking :${currentBookings}">
+                                <td th:text="${booking.getDateOn()}"></td>
+                                <td th:text="${booking.getDateOf()}"></td>
+                                <td th:text="${booking.getRoomType().getName()}"></td>
+                                <td th:text="${booking.getGuestAmount()}"></td>
+                                <td>
+                                    <form th:action="@{/booking/delete}" method="post">
+                                        <input th:type="hidden" th:value="${booking.getId()}" th:name="id">
+                                        <input th:type="submit" th:value="Удалить">
+                                    </form>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Вкладка для истекших бронирований -->
+                    <div id="expiredBookings" class="tab-pane fade">
+                        <!-- Здесь вставьте код для истекших бронирований -->
+                        <div>Содержимое истекших бронирований</div>
+                        <table>
+                            <thead>
+                            <td>Дата заселения</td>
+                            <td>Дата выселения</td>
+                            <td>Номер</td>
+                            <td>Кол-во человек</td>
+                            </thead>
+                            <tbody>
+                            <!--/*@thymesVar id="booking" type="com.vashchenko.project.models.entities.Booking"*/-->
+                            <tr th:each="booking :${expiredBookings}">
+                                <td th:text="${booking.getDateOn()}"></td>
+                                <td th:text="${booking.getDateOf()}"></td>
+                                <td th:text="${booking.getRoomType().getName()}"></td>
+                                <td th:text="${booking.getGuestAmount()}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

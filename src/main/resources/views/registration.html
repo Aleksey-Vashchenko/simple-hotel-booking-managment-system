@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body {
+            background-image: url('static2/images/hotel-banner.jpg');
+            background-size: cover;
+            background-repeat: repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; margin: 0; }
+
+        .registration-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 10px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px; }
+        .form-group { display: flex;
+            flex-direction: column;
+            gap: 5px; }
+        .form-group label { margin-bottom: 5px; }
+        .form-group input { padding: 5px;
+            font-size: 14px; }
+        .submit-button { align-self: end;
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white; border: none;
+            border-radius: 5px;
+            cursor: pointer; }
+
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+<form class="registration-form" th:object="${newUser}" th:action="@{/registration}" th:method="post">
+    <div class="form-group">
+        <label>Логин:</label>
+        <input type="text" name="login" id="login" value="" pattern="[A-Za-z0-9]{9,}"
+               title="Логин должен содержать только латинские буквы и цифры, и быть не менее 8 символов."
+               required autocomplete="off"/>
+        <label>Пароль:</label>
+        <input type="password" name="password" id="password" value="" pattern="[A-Za-z0-9_!]{8,}"
+               title="Пароль должен содержать латинские буквы, цифры, символы '_' и '!', и быть не менее 8 символов."
+               required autocomplete="off"/>
+        <label>Подтвердите пароль:</label>
+        <input type="password" id="confPassword" name="confPassword" required autocomplete="off"/>
+        <input th:replace="~{fragments/general_fragments :: userData_form}">
+        <p id="error" class="error"></p>
+        <input class="submit-button" onclick="validateAndSubmit()" type="submit" value="Зарегистрироваться"/>
+    </div>
+</form>
+<!--<form th:object="${newUser}" th:action="@{/registration}" th:method="post" >-->
+<!--    <div><label> Login : <input type="text" th:field="*{login}" name="login"/> </label></div>-->
+<!--    <div><label> Password : <input type="password" th:field="*{password}" name="password"/> </label></div>-->
+<!--    <div th:replace="~{fragments/general_fragments :: userData_form}"></div>-->
+<!--    <div><input type="submit" value="Registration"/></div>-->
+<!--</form>-->
+
+<!--<header>-->
+<!--    <div th:if="${#strings.isEmpty(existUserError)}"></div>-->
+
+<!--    <div class="head-top" th:replace="~{fragments/general_fragments::main_header1}"></div>-->
+<!--</header>-->
+<script>
+    function validateAndSubmit() {
+        var password1 = document.getElementById('password').value;
+        var password2 = document.getElementById('confPassword').value;
+
+        if (password1 !== password2) {
+            event.preventDefault();
+            var error_text= document.getElementById('error');
+            error_text.textContent="Пароли не совпадают!"
+        } else {
+            // Пароли совпадают, отправляем форму
+            document.getElementById('registrationForm').submit();
+        }
+    }
+</script>
+</body>
+</html>

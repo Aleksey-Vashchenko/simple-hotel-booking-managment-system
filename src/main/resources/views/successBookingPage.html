@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Поздравляем с удачным бронированием</h1>
+<div th:object="${booking}">
+    <p th:text="*{user.getSurname()+' '+user.getName()+' '+user.getPatronymic()}"></p>
+    <p th:text="*{'Номер телефона: '+user.getPhoneNumber()}"></p>
+    <p th:unless="*{#strings.isEmpty(user.getMail())}" th:text="*{'Почта: '+user.getMail()}"></p>
+    <a th:if="${#authorization.getAuthentication().isAuthenticated()}" th:href="@{'/acc/' + ${#authentication.getPrincipal().getUsername()}}">На главную</a>
+    <a th:href="@{/ }">На главную</a>
+</div>
+</body>
+</html>

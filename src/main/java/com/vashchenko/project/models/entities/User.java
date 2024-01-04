@@ -4,6 +4,7 @@ import com.vashchenko.project.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.*;
@@ -22,29 +23,34 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Transient
-    @Column(nullable = false)
     private boolean active=true;
-    @Column(nullable = false)
     private String login;
-    @Column(nullable = false)
     private String password;
-    @Column(name = "phone_number",nullable = false)
+    @Column(name = "phone_number")
     private String phoneNumber;
     private String mail;
     private String name;
     private String surname;
     private String patronymic;
-    @ElementCollection(fetch = FetchType.EAGER)
+    private boolean isRegistered;
+    @ElementCollection(targetClass = Role.class,fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(value = EnumType.STRING)
     @Builder.Default
     private Set<Role> roles = new HashSet<>();
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     @Builder.Default
     private List<Booking> bookingList = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roles;
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+
+        for (Role role : roles) {
+            authorities.add(new SimpleGrantedAuthority(role.name()));
+        }
+
+        return authorities;
     }
 
     @Override

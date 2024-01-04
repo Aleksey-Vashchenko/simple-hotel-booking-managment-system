@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:object="${roomType}" th:action="@{/admin/types/page}"  method="patch">
+  <div class="form-group">
+    <label for="name">Room Name:</label>
+    <input type="text" id="name" name="name" th:field="*{name}" required>
+  </div>
+  <div class="form-group">
+    <label for="description">Description:</label>
+    <textarea id="description" name="description" th:field="*{description}" required></textarea>
+  </div>
+  <div class="form-group">
+    <label for="amountOfAdult">Amount of Adults:</label>
+    <input type="number" id="amountOfAdult" name="amountOfAdult" th:field="*{amountOfAdult}" required>
+  </div>
+  <div class="form-group">
+    <label for="price">Price:</label>
+    <input type="number" id="price" name="price" step="0.01" th:field="*{price}" required>
+  </div>
+  <div class="form-group">
+    <label for="price">Кол-во комнат:</label>
+    <input type="number" id="roomAmount" name="roomAmount" step="1" th:field="*{roomAmount}" required>
+  </div>
+  <div class="form-group">
+    <button type="submit">Edit Room</button>
+  </div>
+</form>
+</body>
+</html>

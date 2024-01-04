@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/static2/css/style.css">
+    <link rel="stylesheet" href="/static2/css/main1.css">
+
+</head>
+<body>
+<th:block th:fragment="main_header"  >
+  <div class="header-main-part" th:if="${#authorization.expression('isAuthenticated()')}">
+      <a th:href="@{/}"><img src="/static2/images/logo.png" alt="logo" style="width: 106px; height: 40px;"></a>
+    <div class="header-main-part-of-buttons">
+      <button class="header-button" onclick="location.href='/acc';">Профиль</button>
+      <button class="header-button" onclick="location.href='/logout';">Выйти</button>
+    </div>
+
+  </div>
+  <div class="header-main-part" th:unless="${#authorization.expression('isAuthenticated()')}">
+    <a th:href="@{/}"><img src="/static2/images/logo.png" alt="logo" style="width: 106px; height: 40px;"></a>
+    <div class="header-main-part-of-buttons">
+      <button class="header-button" onclick="location.href='/login';">Войти</button>
+      <button class="header-button" onclick="location.href='/registration';">Зарегистрироваться</button>
+    </div>
+  </div>
+</th:block>
+
+<div style="height: 400px; width: 250px;;" th:fragment="account_form">
+  <h2 style="text-align: center;">Мой аккаунт</h2>
+  <!--/*@thymesVar id="user" type="com.vashchenko.project.models.entities.User"*/-->
+  <form class="acc-user-form" th:object="${user}" th:action="@{/acc}" method="post" >
+    <!-- Имя -->
+    <label for="name">First Name:</label>
+    <input type="text" id="name" name="name" th:field="*{name}" required />
+
+    <!-- Фамилия -->
+    <label for="surname">Last Name:</label>
+    <input type="text" id="surname" name="surname" th:field="*{surname}" required />
+
+    <!-- Отчество -->
+    <label for="patronymic">Middle Name:</label>
+    <input type="text" id="patronymic" name="patronymic" th:field="*{patronymic}" />
+    <div style="align-content: end">
+      <input th:class="btn" th:type="submit">
+    </div>
+  </form>
+  <form class="acc-user-form" style="display: flex; flex-direction: column;" th:object="${user}" th:action="@{/acc}" method="post">
+    <!-- Номер телефона -->
+    <label for="phoneNumber">Phone Number:</label>
+    <input type="text" id="phoneNumber" name="phoneNumber" th:field="*{phoneNumber}" />
+      <div style="align-content: end">
+        <input th:class="btn" th:type="submit">
+      </div>
+    </form>
+  <form class="acc-user-form" style="display: flex; flex-direction: column;" th:object="${user}" th:action="@{/acc}" method="post">
+    <!-- Электронная почта -->
+    <label for="mail">Email:</label>
+    <input type="email" id="mail" name="mail" th:field="*{mail}" required />
+    <br>
+    <!-- Кнопка сохранения -->
+      <div style="text-align: end">
+        <input th:class="btn" th:type="submit">
+      </div>
+  </form>
+  <form class="acc-user-form" style="display: flex; flex-direction: column;" th:object="${user}" th:action="@{/acc}" method="post">
+    <!-- Логин -->
+    <input type="hidden" id="login" name="login" th:field="*{login}" required minlength="6" pattern="[a-zA-Z0-9]+" />
+    <input class="hidden-input" th:type="hidden" id="id" name="id" th:field="*{id}" th:value="*{getId()}" />
+    <input class="hidden-input" th:type="hidden" id="isRegistered" name="isRegistered" th:field="*{registered}" th:value="*{registered}" />
+    <input class="hidden-input" th:type="hidden" id="roles" name="roles" th:field="*{roles}" th:value="*{getRoles()}" />
+
+    <!-- Пароль -->
+    <label for="password">Пароль</label>
+    <input type="password" id="password" name="password" th:field="*{password}" required />
+    <label for="password">Подтвердите пароль</label>
+    <input type="password" id="confPassword" name="confPassword"  required />
+    <div style="align-content: end">
+      <input th:type="submit" class="btn">
+    </div>
+  </form>
+</div>
+
+<th:block th:fragment="userData_form">
+  <label>Имя :</label>
+  <input type="text" th:field="*{name}" name="name" required autocomplete="off"/>
+  <label> Фамилия : </label>
+  <input type="text" th:field="*{surname}" name="surname" required autocomplete="off"/>
+  <label> Отчество : </label>
+  <input type="text" th:field="*{patronymic}" name="patronymic" required autocomplete="off"/>
+  <label> Номер телефона :</label>
+  <input type="text" name="phoneNumber" th:field="*{phoneNumber}" pattern="375-\d{2}-\d{3}-\d{2}-\d{2}"
+         title="Номер телефона должен быть в формате 375-XX-XXХ-XX-XX."
+         placeholder="375-XX-XXX-XX-XX" autocomplete="off"
+         required/>
+  <label> Почта :</label>
+  <input th:if="${#authorization.getAuthentication().isAuthenticated()}" type="email" th:field="*{mail}" name="mail" autocomplete="off" required/>
+  <input th:unless="${#authorization.getAuthentication().isAuthenticated()}" type="email" th:field="*{mail}" name="mail" autocomplete="off"/>
+</th:block>
+
+<div th:fragment="edit_item_field(fragmentType)" th:switch="${fragmentType}">
+  <div th:case="type">
+    <!--/*@thymesVar id="roomType" type="com.vashchenko.project.models.entities.RoomType"*/-->
+    <form enctype="multipart/form-data" th:object="${roomType}" th:action="@{/admin/types/create}" method="post">
+      <div class="form-group">
+        <label for="name">Room Name:</label>
+        <input type="text" id="name" name="name" th:field="*{name}" required>
+      </div>
+      <div class="form-group">
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" th:field="*{description}" required></textarea>
+      </div>
+      <div class="form-group">
+        <label for="amountOfAdult">Amount of Adults:</label>
+        <input type="number" id="amountOfAdult" name="amountOfAdult" th:field="*{amountOfAdult}" required>
+      </div>
+      <div class="form-group">
+        <label for="price">Price:</label>
+        <input type="number" id="price" name="price" step="0.01" th:field="*{price}" required>
+      </div>
+      <div class="form-group">
+        <label for="price">Кол-во комнат:</label>
+        <input type="number" id="roomAmount" name="roomAmount" step="1" th:field="*{roomAmount}" required>
+      </div>
+      <div class="form-group">
+        <label for="photos">Картинки:</label>
+        <input type="file" id="photos" name="photos" th:value="*{getImages()}" multiple required>
+      </div>
+      <div class="form-group">
+        <button type="submit">Save Room</button>
+      </div>
+    </form>
+  </div>
+  <div th:case="user">
+    <!--/*@thymesVar id="userToEdit" type="com.vashchenko.project.models.entities.User"*/-->
+    <form th:object="${userToEdit}" th:action="@{'/admin/users/edit'}" method="post">
+
+      <!-- Логин -->
+      <label for="login">Login:</label>
+      <input type="text" id="login" name="login" th:field="*{login}" required minlength="6" pattern="[a-zA-Z0-9]+" />
+      <br>
+      <input type="hidden" th:name="id" th:field="*{id}" th:value="*{getId()}">
+      <input type="hidden" th:name="isRegistered" th:field="*{registered}" th:value="*{isRegistered()}">
+      <!-- Пароль -->
+      <input type="hidden" id="password" name="password" th:field="*{password}" required />
+      <br>
+
+      <!-- Имя -->
+      <label for="firstName">First Name:</label>
+      <input type="text" id="firstName" name="firstName" th:field="*{name}" required />
+      <br>
+
+      <!-- Фамилия -->
+      <label for="lastName">Last Name:</label>
+      <input type="text" id="lastName" name="lastName" th:field="*{surname}" required />
+      <br>
+
+      <!-- Отчество -->
+      <label for="middleName">Middle Name:</label>
+      <input type="text" id="middleName" name="middleName" th:field="*{patronymic}" />
+      <br>
+
+      <!-- Номер телефона -->
+      <label for="phoneNumber">Phone Number:</label>
+      <input type="text" id="phoneNumber" name="phoneNumber" th:field="*{phoneNumber}" />
+      <br>
+
+      <input type="hidden" id="email" name="email" th:field="*{mail}" required />
+      <br>
+
+      <!-- Роль (выпадающий список) -->
+      <label for="role">Role:</label>
+      <select id="role" name="role" th:field="*{roles}">
+        <option th:each="role : ${allRoles}" th:value="${role}" th:text="${role.name}"></option>
+      </select>
+      <br>
+
+      <!-- Кнопка сохранения -->
+      <button type="submit">Save</button>
+    </form>
+  </div>
+  <div th:case="booking">
+    <!--/*@thymesVar id="booking" type="com.vashchenko.project.models.entities.Booking"*/-->
+    <form th:object="${booking}" th:action="@{'/admin/bookings/edit'}" method="post">
+
+      <label for="dateOn">Дата заселения:</label>
+      <input type="date" id="dateOn" name="dateOn" th:field="*{dateOn}" th:value="*{getDateOn()}" required/>
+      <br>
+      <input type="hidden" th:name="id" th:field="*{id}" th:value="*{getId()}">
+      <label for="dateOf">Дата выселения:</label>
+      <input type="date" id="dateOf" name="dateOf" th:field="*{dateOf}" th:value="*{getDateOn()}" required />
+      <br>
+
+      <label for="guestAmount">Количество гостей</label>
+      <input type="text" id="guestAmount" name="guestAmount" th:field="*{guestAmount}" th:value="*{getGuestAmount()}" required />
+      <br>
+
+      <label for="name">Имя:</label>
+      <input type="text" id="name" name="name" th:field="*{user.name}" th:value="*{user.getName()}" required />
+      <br>
+      <label for="surname">Фамилия:</label>
+      <input type="text" id="surname" name="surname" th:field="*{user.surname}" th:value="*{user.getSurname()}" required />
+      <br>
+      <label for="patronymic">Отчество:</label>
+      <input type="text" id="patronymic" name="patronymic" th:field="*{user.patronymic}" th:value="*{user.getPatronymic()}" />
+      <br>
+
+      <!-- Номер телефона -->
+      <label for="phoneNumber">Phone Number:</label>
+      <input type="text" id="phoneNumber" name="phoneNumber" th:field="*{user.phoneNumber}" th:value="*{user.getPhoneNumber()}" />
+      <br>
+
+      <!-- Почта -->
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" th:field="*{user.mail}" th:value="*{user.getMail()}" />
+      <br>
+      <!-- Кнопка сохранения -->
+      <button type="submit">Подтвердить</button>
+    </form>
+  </div>
+  <div th:case="*">laldladw</div>
+</div>
+</body>
+</html>

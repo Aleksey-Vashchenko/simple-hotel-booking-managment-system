@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:insert="fragments/general_fragments::main_header"></div>
+<div>
+    <div th:with="role=${session['role']}" th:switch="${role}">
+        <div th:case="'admin'">
+            <div th:replace="~{fragments/adminFragments::admin_panel}"></div>
+            <div th:replace="~{fragments/general_fragments::account_form}"></div>
+        </div>
+        <div th:case="*"><p th:text="${role}"></p></div>
+    </div>
+</div>
+
+</body>
+</html>

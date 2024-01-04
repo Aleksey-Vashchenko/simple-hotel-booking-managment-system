@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="static/css/main.css">
+</head>
+
+<body>
+<header>
+    <div class="head-top" th:replace="~{fragments/general_fragments::main_header1}"></div>
+</header>
+<div class="form-container">
+    <h2>Бронирование номера</h2>
+    <form class="book-form" th:action="@{/booking}" th:method="post" th:object="${booking}">
+        <div class="form-item">
+            <label for="dateOn">Check In Date: </label>
+            <input th:oninput="setDates()" type="date" id="dateOn" th:max="*{dateOn.plusDays(29)}" th:min="*{dateOn.plusDays(1)}" name="dateOn" th:field="*{dateOn}" required>
+        </div>
+        <div class="form-item">
+            <label for="dateOf">Check Out Date: </label>
+            <input type="date"  th:min="*{dateOn.plusDays(1)}" th:max="*{dateOn.plusDays(30)}" id="dateOf" name="dateOf" th:field="*{dateOf}" required>
+        </div>
+        <div class="form-item">
+            <label th:for="peopleAmount">People amount:</label>
+            <select id="peopleAmount" th:name="peopleAmount" th:field="*{guestAmount}">
+                <option th:each="amount : ${amountsOfPeople}" th:value="${amount}" th:text="${amount}"></option>
+            </select>
+        </div>
+        <div class="form-item">
+            <input type="submit" class="btn" value="Book Now">
+        </div>
+</div>
+<script>
+    function setDates() {
+        var dateOn = new Date(document.getElementById('dateOn').value);
+        dateOn.setDate(dateOn.getDate() + 1); // Добавляем один день
+
+        var dateOfInput = document.getElementById('dateOf');
+        dateOfInput.setAttribute('min', dateOn.toISOString().split('T')[0]);
+
+        // Вычисляем максимальную дату (dateOn + 20 дней)
+        var maxDate = new Date(dateOn);
+        maxDate.setDate(maxDate.getDate() + 20);
+        var formattedMaxDate = maxDate.toISOString().split('T')[0];
+        dateOfInput.setAttribute('max', formattedMaxDate);
+    }
+</script>
+</body>
+</html>

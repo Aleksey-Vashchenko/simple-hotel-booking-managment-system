@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body>
+    <div th:fragment="main_header1" class="head-top">
+        <div class="site-name">
+            <img src="static/images/logo.png" alt="logo" height="25px">
+        </div>
+        <div class="site_nav" th:if="${#authorization.expression('isAuthenticated()')}">
+                <a th:href="@{/acc}">Профиль</a>
+                <button class="auth_butt" onclick="location.href='/logout';">Выйти</button>
+        </div>
+        <div class="site_nav" th:unless="${#authorization.expression('isAuthenticated()')}">
+            <button onclick="location.href='/login';">Войти</button>
+            <button onclick="location.href='/registration';">Зарегистрироваться</button>
+        </div>
+    </div>
+<div th:fragment="main_header" >
+    <div th:if="${#authorization.expression('isAuthenticated()')}">
+            <div>
+                <img src="#" alt="logo">
+                <a th:href="@{/acc}">Профиль</a>
+                <button onclick="location.href='/logout';">Выйти</button>
+
+            </div>
+    </div>
+    <div th:unless="${#authorization.expression('isAuthenticated()')}">
+            <img src="#" alt="logo">
+            <button onclick="location.href='/login';">Войти</button>
+            <button onclick="location.href='/registration';">Зарегистрироваться</button>
+    </div>
+</div>
+
+<header th:fragment="user_header">
+    <nav>
+        <ul>
+            <li><a th:href="@{/}" th:text="Главная"></a></li>
+            <li><a th:href="${user.profileUrl}" th:text="Профиль"></a></li>
+            <li><a th:href="${user.myBookingsUrl}" th:text="Мои бронирования"></a></li>
+            <li><a th:href="${user.allBookingsUrl}" th:text="Все бронирования"></a></li>
+        </ul>
+    </nav>
+</header>
+
+    <th:block th:fragment="userData_form">
+        <label>Имя :</label>
+        <input type="text" th:field="*{name}" name="name" required autocomplete="off"/>
+        <label> Фамилия : </label>
+        <input type="text" th:field="*{surname}" name="surname" required autocomplete="off"/>
+        <label> Отчество : </label>
+        <input type="text" th:field="*{patronymic}" name="patronymic" required autocomplete="off"/>
+        <label> Номер телефона :</label>
+        <input type="text" name="phoneNumber" th:field="*{phoneNumber}" pattern="375-\d{2}-\d{3}-\d{2}-\d{2}"
+               title="Номер телефона должен быть в формате 375-XX-XXX-XX-XX."
+               placeholder="375-XX-XXX-XXX-XXX" autocomplete="off"
+               required/>
+        <label> Почта :</label>
+        <input th:if="${#authorization.getAuthentication().isAuthenticated()}" type="email" th:field="*{mail}" name="mail" autocomplete="off" required/>
+        <input th:unless="${#authorization.getAuthentication().isAuthenticated()}" type="email" th:field="*{mail}" name="mail" autocomplete="off"/>
+    </th:block>
+<div th:fragment="account_form">
+    <!--/*@thymesVar id="user" type="com.vashchenko.project.models.entities.User"*/-->
+    <form th:object="${user}" th:action="@{/acc}" method="post">
+
+        <!-- Логин -->
+        <label for="login">Login:</label>
+        <input type="text" id="login" name="login" th:field="*{login}" required minlength="6" pattern="[a-zA-Z0-9]+" />
+        <br>
+        <input th:type="hidden" id="id" name="id" th:field="*{id}" th:value="*{getId()}" />
+        <input th:type="hidden" id="isRegistered" name="isRegistered" th:field="*{registered}" th:value="*{registered}" />
+        <input th:type="hidden" id="roles" name="roles" th:field="*{roles}" th:value="*{getRoles()}" />
+
+        <!-- Пароль -->
+        <label for="password">Пароль</label>
+        <input type="password" id="password" name="password" th:field="*{password}" required />
+        <label for="password">Подтвердите пароль</label>
+        <input type="password" id="confPassword" name="confPassword"  required />
+        <br>
+
+        <!-- Имя -->
+        <label for="name">First Name:</label>
+        <input type="text" id="name" name="name" th:field="*{name}" required />
+        <br>
+
+        <!-- Фамилия -->
+        <label for="surname">Last Name:</label>
+        <input type="text" id="surname" name="surname" th:field="*{surname}" required />
+        <br>
+
+        <!-- Отчество -->
+        <label for="patronymic">Middle Name:</label>
+        <input type="text" id="patronymic" name="patronymic" th:field="*{patronymic}" />
+        <br>
+
+        <!-- Номер телефона -->
+        <label for="phoneNumber">Phone Number:</label>
+        <input type="text" id="phoneNumber" name="phoneNumber" th:field="*{phoneNumber}" />
+        <br>
+
+        <!-- Электронная почта -->
+        <label for="mail">Email:</label>
+        <input type="email" id="mail" name="mail" th:field="*{mail}" required />
+        <br>
+
+        <!-- Кнопка сохранения -->
+        <button type="submit">Save</button>
+    </form>
+</div>
+
+</body>
+</html>

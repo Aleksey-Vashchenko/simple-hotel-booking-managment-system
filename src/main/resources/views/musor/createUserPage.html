@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+<form th:object="${newUser}" th:action="@{/admin/users/edit}" method="post">
+    <div><label> Login : <input type="text" th:field="*{login}" name="login"/> </label></div>
+    <div><label> Password : <input type="password" th:field="*{password}" name="password"/> </label></div>
+    <div th:replace="fragments/general_fragments::userData_form"></div>
+    <label for="role">Role:</label>
+    <select id="role" name="role" th:field="*{roles}">
+        <option th:each="role : ${allRoles}" th:value="${role}" th:text="${role.name}"></option>
+    </select>
+    <div><input type="submit" value="Создать"/></div>
+</form>
+
+
+</div>
+</body>
+</html>

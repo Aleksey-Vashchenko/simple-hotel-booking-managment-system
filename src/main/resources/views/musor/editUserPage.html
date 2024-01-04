@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<<form th:object="${userToEdit}" th:action="@{'/admin/editUser'}" method="post">
+
+<!-- Логин -->
+    <label for="login">Login:</label>
+    <input type="text" id="login" name="login" th:field="*{login}" required minlength="6" pattern="[a-zA-Z0-9]+" />
+    <br>
+    <input type="hidden" th:name="id" th:field="*{id}" th:value="*{getId()}">
+    <input type="hidden" th:name="isRegistered" th:field="*{registered}" th:value="*{isRegistered()}">
+    <!-- Пароль -->
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" th:field="*{password}" required />
+    <br>
+
+    <!-- Имя -->
+    <label for="firstName">First Name:</label>
+    <input type="text" id="firstName" name="firstName" th:field="*{name}" required />
+    <br>
+
+    <!-- Фамилия -->
+    <label for="lastName">Last Name:</label>
+    <input type="text" id="lastName" name="lastName" th:field="*{surname}" required />
+    <br>
+
+    <!-- Отчество -->
+    <label for="middleName">Middle Name:</label>
+    <input type="text" id="middleName" name="middleName" th:field="*{patronymic}" />
+    <br>
+
+    <!-- Номер телефона -->
+    <label for="phoneNumber">Phone Number:</label>
+    <input type="text" id="phoneNumber" name="phoneNumber" th:field="*{phoneNumber}" />
+    <br>
+
+    <!-- Почта -->
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" th:field="*{mail}" required />
+    <br>
+
+    <!-- Роль (выпадающий список) -->
+    <label for="role">Role:</label>
+    <select id="role" name="role" th:field="*{roles}">
+        <option th:each="role : ${allRoles}" th:value="${role}" th:text="${role.name}"></option>
+    </select>
+    <br>
+
+    <!-- Кнопка сохранения -->
+    <button type="submit">Save</button>
+</form>
+</body>
+</html>

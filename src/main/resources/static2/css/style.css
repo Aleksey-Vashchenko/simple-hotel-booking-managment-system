@@ -1,0 +1,103 @@
+.header-main-part{
+    display: flex;
+     flex-direction: row; 
+     justify-content: space-between; 
+     align-items: center ;
+}
+
+
+header{
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.2)), url(/static2/images/hotel1.jpg) center/cover no-repeat;
+    background-color: #9c9898;
+}
+
+input{
+    <!--autocomplete = off;-->
+}
+
+html{height: 100%;
+margin: 0;}
+body {position:relative; min-height: 100%;
+margin: 0;}
+
+ul {
+    list-style: none; /* Убираем маркеры у списка */
+    padding: 0; /* Убираем отступы внутри списка */
+    margin: 0; /* Убираем отступы снаружи списка */
+    display: flex; /* Располагаем элементы в строку */
+    flex-direction: column;
+    justify-content: space-around; /* Равномерно распределяем пространство между элементами */
+}
+
+li {
+    display: inline-block; /* Располагаем элементы списка в строку */
+    font-size: 20px;
+    padding-bottom: 8px;
+    padding-top: 8px;
+    
+}
+
+a {
+    text-decoration: none; /* Убираем стандартное подчеркивание для ссылок */
+    padding: 10px 15px; /* Добавляем внутренние отступы для красивого вида */
+    color:black;
+}
+
+li:hover {
+    background-color: #555; /* Цвет фона при наведении на ссылку */
+}
+
+.header-button {
+    display: inline-flex;
+    margin: 4px;
+    text-decoration: none;
+    position: relative;
+    font-size: 12px;
+    line-height: 20px;
+    padding: 8px 15px;
+    color: #efefef;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-family: 'Roboto Condensed', Тahoma, sans-serif;
+    background: #ffffff00;
+    cursor: pointer;
+    border: 0px solid #ffffff;
+}
+.header-button:hover,
+.header-button:active,
+.header-button:focus {
+    color: #f1cf54;
+}
+.header-button:after,
+.header-button:before {
+    position: absolute;
+    height: 2px;
+    left: 50%;
+    background: #ffffff;
+    bottom: -1px;
+    content: "";
+    transition: all 280ms ease-in-out;
+    width: 0;
+}
+.header-button:before {
+    top: -1px;
+}
+.header-button:hover:after,
+.header-button:hover:before,
+.header-button:active:after,
+.header-button:active:before,
+.header-button:focus:after,
+.header-button:focus:before {
+    width: 100%;
+    left: 0;
+}
+
+.success-link{
+    color: #dddddd;
+}
+
+.success-body{
+    background-color: #9c9898;
+    position:relative; min-height: 100%;
+    margin: 0;
+}

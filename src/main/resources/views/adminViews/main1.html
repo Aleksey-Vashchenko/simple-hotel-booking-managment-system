@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel</title>
+  <style>
+    body {
+      font-family: 'Playfair Display', serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+      color: #292826;
+    }
+
+    header {
+      background-color: #292826;
+      color: #fff;
+      text-align: center;
+      padding: 1em 0;
+    }
+
+    nav {
+      background-color: #292826;
+      color: #fff;
+      padding: 1em;
+      width: 250px;
+      height: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      overflow-y: auto;
+    }
+
+    nav ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav li {
+      margin-bottom: 15px;
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 18px;
+      font-weight: bold;
+      transition: color 0.3s ease;
+    }
+
+    nav a:hover {
+      color: #f9d342;
+    }
+
+    main {
+      margin-left: 250px;
+      padding: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #292826;
+      color: #fff;
+    }
+
+    form {
+      display: inline-block;
+    }
+
+    input[type="text"], input[type="submit"] {
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+
+    /* Add your additional styles here */
+
+  </style>
+</head>
+<body>
+
+<header th:replace="~{fragments/general_fragments :: main_header}"></header>
+
+<nav>
+  <ul>
+    <li><a href="#">Home</a></li>
+    <li><a href="#">Employees</a></li>
+    <!-- Add more menu items as needed -->
+  </ul>
+</nav>
+
+<main>
+  <div>
+    <div th:if="${#strings.isEmpty(ResultOfDeleting)}">
+      <script th:inline="javascript">
+        alert([${ResultOfDeleting}]);
+      </script>
+    </div>
+    <div th:insert="~{fragments/adminFragments::admin_panel}"></div>
+    <div>
+      <form th:action="@{/admin/search}" method="post">
+        <input type="text" name="searchText" placeholder="Search..." />
+        <input type="submit" value="Search" />
+      </form>
+
+      <div th:with="fragmentType=${fragmentType}" th:replace="~{fragments/adminFragments :: work_field(fragmentType=${fragmentType})}"></div>
+    </div>
+  </div>
+</main>
+
+</body>
+</html>

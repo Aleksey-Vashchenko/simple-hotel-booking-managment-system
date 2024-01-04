@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="/static2/css/style.css">
+    <link rel="stylesheet" href="/static2/css/main1.css">
+</head>
+<body class="body-work">
+<header>
+    <div class="head-top" th:replace="~{fragments1/fragments::main_header}"></div>
+</header>
+<div class="work_container">
+    <div th:replace="~{adminViews/adminFragments::admin_panel}"></div>
+    <div class="work_content">
+        <div class="search">
+            <form th:action="@{/admin/search}" method="post">
+                <input type="text" name="searchText" placeholder="Search..." />
+                <input type="submit" value="Search" />
+            </form>
+        </div>
+        <div th:with="fragmentType=${fragmentType}" th:replace="~{adminViews/adminFragments :: work_field(fragmentType=${fragmentType})}"></div>
+    </div>
+</div>
+</body>
+</html>

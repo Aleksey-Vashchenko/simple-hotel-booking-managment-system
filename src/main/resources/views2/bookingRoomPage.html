@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/static2/css/style.css">
+    <link rel="stylesheet" href="/static2/css/main1.css">
+</head>
+<body>
+<header>
+    <div class="head-top" th:replace="~{fragments1/fragments::main_header}"></div>
+</header>
+<div>
+    <section class="rooms sec-width" id="rooms">
+        <div class="rooms-container">
+            <article th:each="roomType : ${roomTypes}" class="room">
+                <div class="room-image">
+                    <div class="myImage" th:each="image : ${roomType.getImages()}">
+                        <img th:src="${image.getUrl()}">
+                    </div>
+                </div>
+                <div class="room-text">
+                    <h3 th:text="${roomType.getName()}"></h3>
+                    <p th:text="${roomType.getDescription()}"></p>
+                    <p class="rate">
+                        <span th:text="${roomType.getPrice()+' BYN / ночь'}">/</span>
+                    </p>
+                    <form th:action="@{/booking/room}" th:method="post" th:each="type : ${roomTypes}">
+                        <input th:type="hidden" th:name="typeId" th:value="${type.getId()}">
+                        <input class="btn" th:type="submit" th:value="Выбрать">
+                    </form>
+                </div>
+            </article>
+        </div>
+    </section>
+</div>
+<script th:inline="javascript">
+    showSlides();
+
+    function showSlides() {
+        const imageElements = document.querySelectorAll('.myImage');
+
+        function showImage(index) {
+            imageElements.forEach((element, i) => {
+                element.style.display = i === index ? 'block' : 'none';
+            });
+        }
+
+        let currentIndex = 0;
+        function changeImage() {
+            currentIndex = (currentIndex + 1) % imageElements.length;
+            showImage(currentIndex);
+        }
+
+// change image every 3 seconds
+        setInterval(changeImage, 3000);
+    }
+</script>
+</body>
+</html>

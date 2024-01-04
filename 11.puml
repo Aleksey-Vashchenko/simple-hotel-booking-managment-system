@@ -1,0 +1,229 @@
+@startuml
+interface com.vashchenko.project.repositories.BookingRepository {
+~ List<Booking> findAllByUser(User)
+~ List<Booking> findByStatusIs(BookingStatus)
+~ List<Booking> findActiveUserBookings(BookingStatus,Long)
+~ List<Booking> findNotActiveUserBookings(BookingStatus,Long)
+~ void closeBookingById(Long,LocalDate,BookingStatus)
+~ void closeEndedBookings(LocalDate,BookingStatus)
+}
+class com.vashchenko.project.controllers.ClientController {
+- BookingService bookingService
+- UserService userService
++ String getBookings(Model,HttpSession)
+}
+class com.vashchenko.project.dbase.HibernateUtil {
+- {static} SessionFactory sessionFactory
++ {static} SessionFactory getSessionFactory()
+}
+class com.vashchenko.project.models.entities.RoomType {
+- Long id
+- String description
+- String name
+- int amountOfAdult
+- int roomAmount
+- double price
+- Set<Image> images
+}
+interface com.vashchenko.project.repositories.RoleRepository {
+}
+class com.vashchenko.project.Main {
++ {static} RoomTypeRepository repository
++ {static} void main(String[])
+}
+class com.vashchenko.project.SpringBootApp {
++ {static} void main(String[])
+}
+class com.vashchenko.project.dbase.ScheduledTask {
+- BookingService bookingService
++ void setCompleteStatus()
++ void makeReserveCopyOfDatabase()
+}
+interface com.vashchenko.project.repositories.UserRepository {
+~ Optional findUserByLogin(String)
+~ Iterable<User> findAllByLoginNot(String)
+~ List<User> findAll()
+}
+class com.vashchenko.project.controllers.HotelMainController {
+- UserService userService
+- BookingService bookingService
+- RoomTypeService roomTypeService
++ String getMainPage(Model,HttpSession)
++ String getBookingPage(Model,HttpSession)
++ String handleBookingDates(Booking,Model,HttpSession,RedirectAttributes)
++ String getBookingRoomPage(Booking,Model)
++ String handleBookingRoomPage(Long,Model,HttpSession,RedirectAttributes)
++ String getCustomerPage(Model)
++ String handleCustomerPage(User,Model,HttpSession,RedirectAttributes)
++ String getConfirmPage(Booking,Model)
++ String handleConfirm(Booking,Model)
++ String successBookingPage(HttpSession,Model)
++ String deleteBooking(Long,HttpServletRequest)
+}
+class com.vashchenko.project.security.UserDetailsServerImpl {
+- UserRepository userRepository
++ UserDetails loadUserByUsername(String)
+}
+enum com.vashchenko.project.enums.Role {
++  ADMIN
++  MANAGER
++  CLIENT
++ String getAuthority()
+}
+class com.vashchenko.project.models.entities.Image {
+- Long id
+- String url
+- RoomType type
++ String toString()
+}
+class com.vashchenko.project.models.entities.Booking {
+- Long id
+- User user
+- LocalDate dateOn
+- LocalDate dateOf
+- BookingStatus status
+- RoomType roomType
+- Integer guestAmount
+- String pastType
+}
+interface com.vashchenko.project.repositories.RoomTypeRepository {
+~ List<RoomType> findAvailableRoomTypes(LocalDate,LocalDate,String,Integer)
+~ Integer findAvailableRooms(LocalDate,LocalDate,String,Long)
+~ Set<Integer> findDistinctAmountOfPeople()
+~ Integer getFreeAmount(Long)
+}
+class com.vashchenko.project.springConfiguration.ThymeleafConfiguration {
+- ApplicationContext applicationContext
++ SpringResourceTemplateResolver templateResolver()
++ SpringTemplateEngine templateEngine()
++ void configureViewResolvers(ViewResolverRegistry)
++ void addResourceHandlers(ResourceHandlerRegistry)
+}
+interface com.vashchenko.project.repositories.ImageRepository {
+~ List<Image> findImagesByRoomTypeId(Long)
+~ void deleteByTypeId(Long)
+}
+class com.vashchenko.project.controllers.AdminController {
+- UserService userService
+- RoomTypeService roomTypeService
+- ImageService imageService
+- BookingService bookingService
+- PasswordEncoder passwordEncoder
+~ String getMainAdminPage(String,Model,Principal)
+~ String getAccountPage(String,Model)
+~ String getUsersPage(Model,Principal)
+~ String deleteUser(long,Model,Principal)
+~ String editUserPage(String,Model,Principal)
+~ String acceptEditedUser(User,Model)
+~ String createUserPage(Model,Principal)
+~ String createUser(User,Model)
+~ String getTypesPage(Model)
+~ String deleteType(Long)
+~ String getCreateTypePage(Model)
++ String handleRoomType(RoomType,MultipartFile[])
+~ String getEditTypePage(String,Model)
+~ String handleEditingType(RoomType,Model)
+~ String getBookingPage(Model,Principal)
+~ String deleteBooking(Long)
+~ String closeBooking(Long)
+- void deleteImagesFromServer(List<String>)
+}
+class com.vashchenko.project.springConfiguration.SpringConfigurations {
++ FilterRegistrationBean hiddenHttpMethodFilter()
+}
+class com.vashchenko.project.services.BookingService {
+- BookingRepository bookingRepository
++ void saveBooking(Booking)
++ List<Booking> getActiveBookings()
++ void deleteBookingById(Long)
++ Optional<Booking> findBookingById(Long)
++ List<Booking> findActiveBookingsByUserId(Long)
++ List<Booking> findNotActiveBookingsByUserId(Long)
++ void closeBooking(Long)
++ void closeEndedBookings()
+}
+enum com.vashchenko.project.enums.BookingStatus {
++  ACTIVE
++  COMPLETED
+}
+class com.vashchenko.project.services.UserService {
+- UserRepository userRepository
++ void deleteUserById(Long)
++ Iterable<User> findAllByLoginNot(String)
++ User findById(Long)
++ void save(User)
++ User getUserByLogin(String)
+}
+class com.vashchenko.project.security.SecurityConfiguration {
++ UserDetailsService userDetailsService()
++ SecurityFilterChain securityFilterChain(HttpSecurity)
++ PasswordEncoder passwordEncoder()
++ AuthenticationProvider authenticationProvider()
+}
+class com.vashchenko.project.security.SecurityConfiguration$CustomAuthenticationHandler {
++ void onAuthenticationSuccess(HttpServletRequest,HttpServletResponse,Authentication)
+}
+class com.vashchenko.project.controllers.ManagerController {
+}
+class com.vashchenko.project.controllers.AuthenticationController {
+- PasswordEncoder passwordEncoder
+- UserRepository userRepository
+- UserService userService
++ String getLoginPage()
++ String getRegistrationPage(Model)
++ String addUser(User,Model)
++ String returnProfilePage(String,HttpSession)
++ String getAccountPage(Model,HttpSession)
++ String saveAccountChanges(User,Model)
+- void setRoleInSession(HttpSession,String)
+}
+class com.vashchenko.project.services.RoomTypeService {
+- RoomTypeRepository roomTypeRepository
+- BookingRepository bookingRepository
++ List<RoomType> findAvailableRoomTypes(Booking)
++ List<RoomType> findAll()
++ void save(RoomType)
++ Optional<RoomType> findById(Long)
++ void deleteRoomTypeById(Long)
++ Set<Integer> getSetOfRoomTypesPeopleAmount()
++ Integer findAvailableRoomsOfType(RoomType)
+}
+class com.vashchenko.project.models.entities.User {
+- Long id
+- boolean active
+- String login
+- String password
+- String phoneNumber
+- String mail
+- String name
+- String surname
+- String patronymic
+- boolean isRegistered
+- Set<Role> roles
+- List<Booking> bookingList
++ Collection<? extends GrantedAuthority> getAuthorities()
++ String getUsername()
++ boolean isAccountNonExpired()
++ boolean isAccountNonLocked()
++ boolean isCredentialsNonExpired()
++ boolean isEnabled()
++ void addRole(Role)
+}
+class com.vashchenko.project.services.ImageService {
+- ImageRepository imageRepository
++ void saveImage(Image)
++ void deleteImagesByRoomTypeId(Long)
++ List<String> getImagesByRoomTypeId(Long)
+}
+
+
+org.springframework.data.jpa.repository.JpaRepository <|-- com.vashchenko.project.repositories.BookingRepository
+org.springframework.data.jpa.repository.JpaRepository <|-- com.vashchenko.project.repositories.UserRepository
+org.springframework.security.core.userdetails.UserDetailsService <|.. com.vashchenko.project.security.UserDetailsServerImpl
+org.springframework.data.jpa.repository.JpaRepository <|-- com.vashchenko.project.repositories.RoomTypeRepository
+org.springframework.web.servlet.config.annotation.WebMvcConfigurer <|.. com.vashchenko.project.springConfiguration.ThymeleafConfiguration
+org.springframework.data.jpa.repository.JpaRepository <|-- com.vashchenko.project.repositories.ImageRepository
+com.vashchenko.project.security.SecurityConfiguration +.. com.vashchenko.project.security.SecurityConfiguration$CustomAuthenticationHandler
+com.vashchenko.project.security.SavedRequestAwareAuthenticationSuccessHandler <|-- com.vashchenko.project.security.SecurityConfiguration$CustomAuthenticationHandler
+org.springframework.security.core.userdetails.UserDetails <|.. com.vashchenko.project.models.entities.User
+@enduml

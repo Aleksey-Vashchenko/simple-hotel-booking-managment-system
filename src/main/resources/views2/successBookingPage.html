@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/static2/css/style.css">
+    <link rel="stylesheet" href="/static2/css/main1.css">
+</head>
+<body class="success-body">
+<header>
+    <div class="head-top" th:replace="~{fragments1/fragments::main_header}"></div>
+</header>
+<div style="background-color: #9c9898;">
+    <h1 style="text-align: center">Поздравляем с удачным бронированием</h1>
+    <section class="rooms sec-width" id="rooms">
+        <div class="rooms-container">
+            <article th:object="${booking}" class="room">
+                <div class="room-image">
+                    <div class="myImage" th:each="image : ${booking.roomType.getImages()}">
+                        <img th:src="${image.getUrl()}">
+                    </div>
+                </div>
+                <script th:inline="javascript">
+                    showSlides();
+
+                    function showSlides() {
+                        const imageElements = document.querySelectorAll('.myImage');
+
+                        function showImage(index) {
+                            imageElements.forEach((element, i) => {
+                                element.style.display = i === index ? 'block' : 'none';
+                            });
+                        }
+
+                        let currentIndex = 0;
+                        function changeImage() {
+                            currentIndex = (currentIndex + 1) % imageElements.length;
+                            showImage(currentIndex);
+                        }
+
+// change image every 3 seconds
+                        setInterval(changeImage, 3000);
+                    }
+                </script>
+                <div class="room-text">
+                    <h3 th:text="${booking.roomType.getName()}"></h3>
+                    <p th:text="${booking.roomType.getDescription()}"></p>
+                    <p class="rate">
+                        <span th:text="${booking.roomType.getPrice()+' BYN / ночь'}">/</span>
+                    </p>
+                </div>
+                <div style="padding: 15px; align-content: center">
+                    <p th:text="*{'Гость:' + user.getSurname()+' '+user.getName()+' '+user.getPatronymic()}"></p>
+                    <p th:text="*{'Номер телефона: '+user.getPhoneNumber()}"></p>
+                    <p th:unless="*{#strings.isEmpty(user.getMail())}" th:text="*{'Почта: '+user.getMail()}"></p>
+                    <p th:text="${'Дата заезда: '+booking.getDateOn()}"></p>
+                    <p th:text="${'Дата выезда: '+booking.getDateOf()}"></p>
+                    <p th:text="${'Стоимость: '+days*booking.roomType.getPrice()}"></p>
+                    <div style="display: flex">
+                        <a class="success-link" th:if="${#authorization.getAuthentication().isAuthenticated()}" th:href="@{'/acc/' + ${#authorization.getAuthentication().getName()}}">В аккаунт</a>
+                        <a class="success-link" th:href="@{/}">На главную</a>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </section>
+</div>
+
+</body>
+</html>

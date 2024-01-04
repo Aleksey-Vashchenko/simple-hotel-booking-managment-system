@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Responsive Hotel Website</title>
+  <link rel="stylesheet" href="/static2/css/main1.css">
+  <link rel="stylesheet" href="/static2/css/style.css">
+  <script src="static2/js/main.js" crossorigin="anonymous"></script>
+</head>
+<body>
+<!-- start header -->
+<header class="header" id="header">
+  <div class="head-top" th:replace="~{fragments1/fragments::main_header}"></div>
+
+  <div class="head-bottom flex">
+    <h2>Лучшая Гостиница класса Люкс в городе</h2>
+    <p>Добро пожаловать в нашу уютную гостиницу, где каждая деталь создана для вашего максимального комфорта. Роскошные номера, изысканный дизайн и внимательный персонал сделают ваше пребывание незабываемым. Отдыхайте в стиле и наслаждайтесь атмосферой нашего уникального отеля, где ваше удовольствие - наш главный приоритет.</p>
+  </div>
+</header>
+<!-- end header -->
+
+<!-- Booking form -->
+<div class="book">
+  <form class="book-form" th:action="@{/booking}" th:method="post" th:object="${booking}">
+    <div class="form-item">
+      <label for="dateOn">Дата заселения: </label>
+      <input th:oninput="setDates()" type="date" id="dateOn" th:max="*{dateOn.plusDays(29)}" th:min="*{dateOn.plusDays(1)}" name="dateOn" th:field="*{dateOn}" required>
+    </div>
+    <div class="form-item">
+      <label for="dateOf">Дата выселения: </label>
+      <input type="date"  th:min="*{dateOn.plusDays(1)}" th:max="*{dateOn.plusDays(30)}" id="dateOf" name="dateOf" th:field="*{dateOf}" required>
+    </div>
+    <div class="form-item">
+      <label th:for="peopleAmount">Кол-во людей:</label>
+      <select id="peopleAmount" th:name="peopleAmount" th:field="*{guestAmount}">
+        <option th:each="amount : ${amountsOfPeople}" th:value="${amount}" th:text="${amount}"></option>
+      </select>
+    </div>
+    <div class="form-item">
+      <input type="submit" class="btn" value="Подобрать комнаты">
+    </div>
+  </form>
+</div>
+<!-- end of booking form -->
+
+<!-- website body -->
+<section class="services sec-width" id="services">
+  <div class="title">
+    <h2>сервисы</h2>
+  </div>
+  <div class="services-container">
+    <article class="service">
+      <div class="service-icon">
+                    <span>
+                        <i class="fas fa-utensils"></i>
+                    </span>
+      </div>
+      <div class="service-content">
+        <h2>Высокая кухня</h2>
+        <p>Пробуждайте ваши вкусовые рецепторы в нашем ресторане, где каждое блюдо - настоящее произведение искусства. Наши талантливые повара тщательно отбирают ингредиенты, чтобы создать неповторимые впечатления для ваших вкусовых рецепторов. Расслабьтесь в уютной атмосфере, наслаждайтесь богатством вкусов и ощутите наше стремление угодить вашему гурманскому вкусу. Ваше удовольствие - наша главная задача.</p>
+      </div>
+    </article>
+    <article class="service">
+      <div class="service-icon">
+                    <span>
+                        <i class="fas fa-swimming-pool"></i>
+                    </span>
+      </div>
+      <div class="service-content">
+        <h2>Бассейн \ Спа</h2>
+        <p>Наш уникальный бассейн и спа-комплекс, где расслабление и уход за собой становятся важной частью вашего пребывания. Наш крытый бассейн предлагает идеальное место для освежения и восстановления. Расплескайтесь в чистой воде и наслаждайтесь спокойствием в нашем уединенном уголке рая. А наш современный спа-центр с саунами и расслабляющими процедурами обеспечит вам моменты настоящего блаженства. Откройте для себя идеальное сочетание роскоши и уюта в нашем бассейне и спа.
+        </p>
+      </div>
+    </article>
+    <article class="service">
+      <div class="service-icon">
+                    <span>
+                        <i class="fas fa-broom"></i>
+                    </span>
+      </div>
+      <div class="service-content">
+        <h2>Обслуживание номеров</h2>
+        <p>Наша служба домашнего хозяйства создает непередаваемую чистоту и комфорт для вашего уюта. Наши заботливые сотрудники гарантируют, что каждая деталь в вашем номере и в общественных зонах поддерживается в идеальном порядке. Мы стремимся сделать ваше пребывание беззаботным, предоставляя вам непревзойденный уровень чистоты и уюта. Позвольте нам заботиться о вашем пространстве, чтобы вы могли наслаждаться каждым моментом своего пребывания в нашем отеле.</p>
+      </div>
+    </article>
+    <article class="service">
+      <div class="service-icon">
+                    <span>
+                        <i class="fas fa-door-closed"></i>
+                    </span>
+      </div>
+      <div class="service-content">
+        <h2>Приватность</h2>
+        <p>
+          Безопасность вашего пребывания является нашим первостепенным приоритетом. Наши современные системы безопасности и обширные меры предосторожности обеспечивают защиту каждого гостя. Мы гордимся тем, что предлагаем вам спокойствие и уверенность в том, что ваш номер - ваш личный уголок безопасности и комфорта. Приглашаем вас насладиться уютом и беззаботностью, зная, что мы заботимся о вашей безопасности с таким же вниманием, как и о вашем удобстве.</p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="rooms sec-width" id="rooms">
+  <div class="title">
+    <h2>rooms</h2>
+  </div>
+  <div class="rooms-container">
+    <article th:each="roomType : ${listOfTypes}" class="room">
+      <div class="room-image">
+        <div class="myImage" th:each="image : ${roomType.getImages()}">
+          <img th:src="${image.getUrl()}">
+        </div>
+      </div>
+      <div class="room-text">
+        <h3 th:text="${roomType.getName()}"></h3>
+        <p th:text="${roomType.getDescription()}"></p>
+        <p class="rate">
+          <span th:text="${roomType.getPrice()+' BYN / ночь'}">/</span>
+        </p>
+      </div>
+    </article>
+  </div>
+</section>
+<!-- end of website body -->
+
+<!-- Footer section -->
+<footer class="footer">
+  <div class="footer-container">
+    <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d14131.036667732067!2d85.32395955!3d27.69383745!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2snp!4v1637755481449!5m2!1sen!2snp" width="600" height="250" style="border:0;"
+            allowfullscreen="" loading="lazy"></iframe>
+    <div>
+      <h2>Have a Question?</h2>
+      <div class="contact-item">
+                    <span>
+                        <i class="fas fa-map-marker-alt"></i>
+                    </span>
+        <span>
+                        12 Bulka street, New-York, New-York
+                    </span>
+      </div>
+      <div class="contact-item">
+                    <span>
+                        <i class="fas fa-phone-alt"></i>
+                    </span>
+        <span>
+                        +123456789012
+                    </span>
+      </div>
+      <div class="contact-item">
+                    <span>
+                        <i class="fas fa-envelope"></i>
+                    </span>
+        <span>
+                        besthotel@yandex.com
+                    </span>
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- End of footer section-->
+<script th:inline="javascript">
+  showSlides();
+
+  function showSlides() {
+    const imageElements = document.querySelectorAll('.myImage');
+
+    function showImage(index) {
+      imageElements.forEach((element, i) => {
+        element.style.display = i === index ? 'block' : 'none';
+      });
+    }
+
+    let currentIndex = 0;
+    function changeImage() {
+      currentIndex = (currentIndex + 1) % imageElements.length;
+      showImage(currentIndex);
+    }
+
+// change image every 3 seconds
+    setInterval(changeImage, 3000);
+  }
+</script>
+<script>
+  function setDates() {
+    var dateOn = new Date(document.getElementById('dateOn').value);
+    dateOn.setDate(dateOn.getDate() + 1); // Добавляем один день
+
+    var dateOfInput = document.getElementById('dateOf');
+    dateOfInput.setAttribute('min', dateOn.toISOString().split('T')[0]);
+
+    // Вычисляем максимальную дату (dateOn + 20 дней)
+    var maxDate = new Date(dateOn);
+    maxDate.setDate(maxDate.getDate() + 20);
+    var formattedMaxDate = maxDate.toISOString().split('T')[0];
+    dateOfInput.setAttribute('max', formattedMaxDate);
+  }
+</script>
+</body>
+</html>

@@ -14,11 +14,9 @@
     <property name="hibernate.format_sql">true</property>
 
     <mapping class="com.vashchenko.project.models.entities.Image"/>
-    <mapping class="com.vashchenko.project.models.entities.Room"/>
     <mapping class="com.vashchenko.project.models.entities.User"/>
     <mapping class="com.vashchenko.project.models.entities.RoomType"/>
     <mapping class="com.vashchenko.project.models.entities.Booking"/>
-    <mapping class="com.vashchenko.project.models.entities.Guest"/>
 
 
 

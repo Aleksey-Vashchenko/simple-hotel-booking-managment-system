@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="/static2/css/style.css" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="head-top" th:replace="~{fragments1/fragments::main_header}"></div>
+    </header>
+    <div style="display: flex; flex-direction: row;height:max-content;height:100vh;background-color: rgba(199, 195, 195, 0.704);">
+        <div style="background-color: dimgrey;">
+            <h1 style="margin: 20px">Панель админа</h1>
+            <div>
+                <nav>
+                    <ul>
+                        <li><a href="#" th:href="@{/acc}">Профиль</a></li>
+                        <li><a href="#" th:href="@{/booking}">Создать бронирование</a></li>
+                        <li><a href="#" th:href="@{/admin/types}">Комнаты</a></li>
+                        <li><a href="#" th:href="@{/admin/bookings}">Бронирования</a></li>
+                        <li><a href="#" th:href="@{/admin/users}">Пользователи</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <div style="padding-left: 80px; padding-top: 20px;">
+            <div style="width: 250px;">
+                <h2 style="text-align: center; margin: auto;">Мой аккаунт</h2>
+                <div>
+                    <div>
+                        <h4>Сменить ФИО</h4>
+                        <form style="display: flex; flex-direction: column;" th:action="@{/acc/changeName}" th:method="post" th:object="${user}">
+                            <label>Имя</label>
+                            <input type="text" th:field="*{name}" th:name="*{name}" th:value="*{getName()}">
+                            <label>Фамилия</label>
+                            <input type="text" th:field="*{surname}" th:name="*{surname}" th:value="*{getSurname()}">
+                            <label>Отчество</label>
+                            <input type="text" th:field="*{patronymic}" th:name="*{patronymic}" th:value="*{getPatronymic()}">
+                            <div style="text-align: end; padding-top: 10px;">
+                                <input type="submit" value="Сменить">
+                            </div>
+                        </form>
+                    </div>
+                    <div>
+                        <h2>Сменить пароль</h2>
+                        <form style="display: flex; flex-direction: column;" th:action="@{/acc/changePass}" th:method="post" th:object="${user}">
+                            <label>Новый пароль</label>
+                            <input type="password" required th:field="*{password}" th:name="*{password}" autocomplete="off">
+                            <label>Подтвердите пароль</label>
+                            <input type="password">
+                            <div style="text-align: end;padding-top: 10px;">
+                                <input type="submit" value="Сменить">
+                            </div>
+                        </form>
+                    </div>
+                    <div>
+                        <h4>Сменить почту</h4>
+                        <form style="display: flex; flex-direction: column;" th:action="@{/acc/changeMail}" th:method="post" th:object="${user}">
+                            <label>Почта</label>
+                            <input type="email" value="123@gail.ron" required>
+                            <div style="text-align: end;padding-top: 10px;">
+                                <input type="submit" value="Сменить">
+                            </div>
+                        </form>
+                    </div>
+                    <div>
+                        <h4>Сменить телефон</h4>
+                        <form style="display: flex; flex-direction: column;" th:action="@{/acc/changePhone}" th:method="post" th:object="${user}">
+                            <label>Телефон</label>
+                            <input type="tel" name="phoneNumber" th:field="*{phoneNumber}" pattern="375-\d{2}-\d{3}-\d{2}-\d{2}"
+                                   title="Номер телефона должен быть в формате 375-XX-XXX-XX-XX."
+                                   placeholder="375-XX-XXX-XX-XX" autocomplete="off"
+                                   required/>
+                            <div style="text-align: end;padding-top: 10px;">
+                                <input type="submit" value="Сменить">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

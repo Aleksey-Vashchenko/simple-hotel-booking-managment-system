@@ -1,6 +1,7 @@
 package com.vashchenko.project.models.entities;
 
 import com.vashchenko.project.enums.BookingStatus;
+import com.vashchenko.project.repositories.RoomTypeRepository;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -14,14 +15,12 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(exclude = "guests")
-@ToString(exclude = "guests")
 @Table(name = "booking")
 public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.REFRESH,CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST})
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
     @Column(name = "date_on", nullable = false)
@@ -31,25 +30,11 @@ public class Booking {
     @Enumerated(value = EnumType.STRING)
     @Column(name = "status",nullable = false)
     private BookingStatus status;
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "room_id", nullable = false)
-    private Room room;
-    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "many_bookings_to_many_guests",
-            joinColumns = @JoinColumn(name = "booking_id"),
-            inverseJoinColumns = @JoinColumn(name = "guest_id")
-    )
-    @Builder.Default
-    private List<Guest> guests = new ArrayList<>();
-    @Transient
-    private short amountOfGuests;
-    public void addGuest(Guest guest){
-        guests.add(guest);
-    }
-    public void initAmountOfGuests(){
-        if(!this.guests.isEmpty()){
-            this.amountOfGuests=(short) guests.size();
-        }
-    }
+    @ManyToOne()
+    @JoinColumn(name = "type_id", nullable = true)
+    private RoomType roomType;
+    @Column(name = "guest_amount")
+    private Integer guestAmount;
+    @Column(name = "past_type")
+    private String pastType;
 }

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/static2/css/style.css">
+    <link rel="stylesheet" href="/static2/css/main1.css">
+</head>
+<body style="background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)), url(/static2/images/hotel-banner.jpg) center/cover no-repeat;">
+<header>
+    <div class="head-top" th:replace="~{fragments1/fragments::main_header}"></div>
+</header>
+<div class="book" style="display: flex; justify-content: center">
+    <form class="book-form-1" th:action="@{/booking/customer}" th:object="${newUser}" th:method="post">
+        <div class="form-item">
+            <div th:replace="~{fragments1/fragments::userData_form}"></div>
+            <input th:type="submit" th:value="Подтвердить">
+        </div>
+
+    </form>
+</div>
+</body>
+</html>
+
+<!--<div class="form-item">
+            <label>Имя :</label>
+            <input type="text" th:field="*{name}" name="name" required autocomplete="off"/>
+        </div>
+        <div class="form-item">
+            <label> Фамилия : </label>
+            <input type="text" th:field="*{surname}" name="surname" required autocomplete="off"/>
+        </div>
+        <div class="form-item">
+            <label> Отчество : </label>
+            <input type="text" th:field="*{patronymic}" name="patronymic" required autocomplete="off"/>
+        </div>
+        <div class="form-item">
+            <label> Номер телефона :</label>
+            <input type="text" name="phoneNumber" th:field="*{phoneNumber}" pattern="375-\d{2}-\d{3}-\d{2}-\d{2}"
+                   title="Номер телефона должен быть в формате 375-XX-XXX-XXX-XXX."
+                   placeholder="375-XX-XXX-XXX-XXX" autocomplete="off"
+                   required/>
+        </div>
+        <div class="form-item">
+            <label> Почта :</label>
+            <input th:if="${#authorization.getAuthentication().isAuthenticated()}" type="email" th:field="*{mail}" name="mail" autocomplete="off" required/>
+            <input th:unless="${#authorization.getAuthentication().isAuthenticated()}" type="email" th:field="*{mail}" name="mail" autocomplete="off"/>
+        </div>
+        <div class="form-item">
+            <input th:type="submit" th:value="Подтвердить">
+        </div>
+    </form>-->
